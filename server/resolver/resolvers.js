@@ -1,82 +1,41 @@
-const Author = require("../models/Author");
-
-const books = [
-  {
-    id: 1,
-    name: "The Awakening",
-    genre: "Kate Chopin",
-    authorId: 1,
-  },
-  {
-    id: 2,
-    name: "City of Glass",
-    genre: "Paul Auster",
-    authorId: 2,
-  },
-  {
-    id: 3,
-    name: "Love and gain",
-    genre: "Roma Auster",
-    authorId: 3,
-  },
-  {
-    id: 4,
-    name: "Action",
-    genre: "Last fight",
-    authorId: 1,
-  },
-];
-
-const authors = [
-  {
-    id: 1,
-    name: "alex",
-    age: 25,
-  },
-  {
-    id: 2,
-    name: "alex1",
-    age: 32,
-  },
-  {
-    id: 3,
-    name: "alex3",
-    age: 32,
-  },
-];
 const resolvers = {
   Query: {
-    books: () => books,
+    books: async (parent, args, { mongoMethods }) => {
+      const books = await mongoMethods.getAllBooks();
+      return books;
+    },
     book: (parent, args) => books.find((book) => book.id == args.id),
-    authors: async (parent, args, context) => {
-      console.log({context});
-      const authors = await context.mongoMethods.getAllAuthors();
+    authors: async (parent, args, { mongoMethods }) => {
+      const authors = await mongoMethods.getAllAuthors();
       return authors;
     },
-    author: async (parent, args, context) => {
-      const result = await Author.findById(args.id);
-      return result;
+    author: async (parent, args, { mongoMethods }) => {
+      const author = await mongoMethods.getAuthorById(args.id);
+      return author;
     },
   },
   Book: {
-    author: (parent, args) => {
-      return authors.find((author) => author.id == parent.authorId);
+    author: async (parent, args, { mongoMethods }) => {
+      const author = await mongoMethods.getAuthorById(parent.authorId);
+      return author;
     },
   },
   Author: {
-    books: (parent, args) => {
-      return books.filter((book) => book.authorId == parent.id);
+    books: async (parent, args, { mongoMethods }) => {
+      const books = await mongoMethods.getBooksByAuthor(parent.id);
+      return books;
     },
   },
 
   //Mutation
   Mutation: {
-    createAuthor: async (parent, { name, age }) => {
-      const data = await Author.create({ name, age });
+    createAuthor: async (parent, args, { mongoMethods }) => {
+      const data = await mongoMethods.createAuthor(args);
       return data;
     },
-    createBook: (parent, args) => {
-      return args;
+    createBook: async (parent, args, { mongoMethods }) => {
+      const book = await mongoMethods.createBook(args);
+      return book;
     },
   },
 };

@@ -22,7 +22,6 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-  context: () => ({ mongoMethods }),
 });
 
 const connectDB = async () => {
@@ -38,7 +37,13 @@ const connectDB = async () => {
 (async () => {
   await server.start();
   await connectDB();
-  app.use(cors(), bodyParser.json(), expressMiddleware(server));
+  app.use(
+    cors(),
+    bodyParser.json(),
+    expressMiddleware(server, {
+      context: () => ({ mongoMethods }),
+    })
+  );
 
   app.get("/log", (req, res) => {
     res.send({ data: "hello" });
