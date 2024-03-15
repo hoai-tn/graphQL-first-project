@@ -4,7 +4,10 @@ const resolvers = {
       const books = await mongoMethods.getAllBooks();
       return books;
     },
-    book: (parent, args) => books.find((book) => book.id == args.id),
+    book: async (parent, args, { mongoMethods }) => {
+      const book = await mongoMethods.getBookById(args.id);
+      return book;
+    },
     authors: async (parent, args, { mongoMethods }) => {
       const authors = await mongoMethods.getAllAuthors();
       return authors;
