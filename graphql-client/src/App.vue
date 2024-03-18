@@ -1,10 +1,14 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+// watchEffect(() => {
+//   });
+import Books from "@/components/Books.vue";
+</script>
 <template>
-  <ul class="steps">
-    <li class="step step-primary">Register</li>
-    <li class="step step-primary">Choose plan</li>  
-    <li class="step">Purchase</li>
-    <li class="step">Receive Product</li>
-  </ul>
+  <div class="container mx-auto my-10">
+    <button class="btn btn-secondary btn-sm rounded-sm mb-3"  onclick="my_modal_1.showModal()">
+      Create book
+    </button>
+    <Books />
+  </div>
 </template>
 <style scoped></style>

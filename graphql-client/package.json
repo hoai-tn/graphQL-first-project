@@ -11,6 +11,10 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@apollo/client": "^3.9.7",
+    "@vue/apollo-composable": "^4.0.2",
+    "graphql": "^16.8.1",
+    "graphql-tag": "^2.12.6",
     "vue": "^3.3.11"
   },
   "devDependencies": {

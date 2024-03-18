@@ -1,0 +1,18 @@
+<script lang="ts" setup>
+const props = defineProps({
+  book: Object,
+});
+</script>
+
+<template>
+  <div class="card bg-base-100 shadow-xl">
+    <div class="card-body p-4">
+      <h2 class="card-title">{{ book.name }}</h2>
+      <p>{{ book.genre }}</p>
+      <div class="card-actions justify-between">
+        <button class="btn btn-primary btn-sm rounded-sm">Buy Now</button>
+        <button class="btn btn-primary btn-sm rounded-sm">Modify</button>
+      </div>
+    </div>
+  </div>
+</template>
