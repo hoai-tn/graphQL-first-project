@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import Book from "./Book.vue";
+import Loading from "./Loading.vue";
 import { useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { computed, watchEffect } from "vue";
@@ -17,7 +18,7 @@ const BOOK_QUERY = gql`
     }
   }
 `;
-const { result } = useQuery(BOOK_QUERY);
+const { result, loading } = useQuery(BOOK_QUERY);
 const books = computed(() => result.value?.books || []);
 </script>
 
@@ -25,6 +26,7 @@ const books = computed(() => result.value?.books || []);
   <div>
     <div class="grid grid-cols-5 gap-4">
       <Book v-for="book in books" :key="book.id" :book="book" />
+      <Loading :isLoading="loading" />
     </div>
     <dialog id="my_modal_1" class="modal">
       <div class="modal-box">
