@@ -15,7 +15,7 @@ const typeDefs = `#graphql
   type Query {
     books: [Book]
     book (id: ID!): Book
-    authors: [Author]
+    authors(offset: Int, limit: Int, isGetAll: Boolean): [Author]
     author(id: ID!): Author
   }
 

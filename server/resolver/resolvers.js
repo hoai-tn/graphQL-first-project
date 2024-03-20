@@ -9,7 +9,7 @@ const resolvers = {
       return book;
     },
     authors: async (parent, args, { mongoMethods }) => {
-      const authors = await mongoMethods.getAllAuthors();
+      const authors = await mongoMethods.getAllAuthors(args);
       return authors;
     },
     author: async (parent, args, { mongoMethods }) => {

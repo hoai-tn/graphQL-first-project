@@ -11,7 +11,13 @@ const mongoMethods = {
     const books = await Book.find({ authorId: authorId });
     return books;
   },
-  getAllAuthors: async () => await Author.find(),
+  getAllAuthors: async ({ limit = 25, offset = 0, isGetAll }) => {
+    console.log({isGetAll});
+    let authors = [];
+    if (isGetAll) authors = await Author.find();
+    else authors = await Author.find().skip(offset).limit(limit);
+    return authors;
+  },
   createBook: async ({ authorId, genre, name }) => {
     const book = await Book.create({ authorId, genre, name });
     return book;

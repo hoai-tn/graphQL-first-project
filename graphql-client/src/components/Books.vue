@@ -1,25 +1,18 @@
 <script lang="ts" setup>
 import Book from "./Book.vue";
 import Loading from "./Loading.vue";
-import { useQuery } from "@vue/apollo-composable";
-import gql from "graphql-tag";
-import { computed, watchEffect } from "vue";
+import CreateBookForm from "./CreateBookForm.vue";
+import useBooks from "@/hooks/useBooks";
+import { ref } from "vue";
 
-const BOOK_QUERY = gql`
-  query {
-    books {
-      genre
-      name
-      id
-      author {
-        name
-        id
-      }
-    }
-  }
-`;
-const { result, loading } = useQuery(BOOK_QUERY);
-const books = computed(() => result.value?.books || []);
+const modal = ref(null);
+
+const { books, loading, createBook } = useBooks();
+
+const handleSubmit = (form) => {
+  createBook(form);
+  modal.value.close();
+};
 </script>
 
 <template>
@@ -28,15 +21,11 @@ const books = computed(() => result.value?.books || []);
       <Book v-for="book in books" :key="book.id" :book="book" />
       <Loading :isLoading="loading" />
     </div>
-    <dialog id="my_modal_1" class="modal">
+    <dialog ref="modal" id="my_modal_1" class="modal">
       <div class="modal-box">
-        <h3 class="font-bold text-lg">Hello!</h3>
-        <p class="py-4">Press ESC key or click the button below to close</p>
+        <h3 class="font-bold text-lg">Create Book</h3>
         <div class="modal-action">
-          <form method="dialog">
-            <!-- if there is a button in form, it will close the modal -->
-            <button class="btn">Close</button>
-          </form>
+          <CreateBookForm @on-submit="handleSubmit" />
         </div>
       </div>
     </dialog>
